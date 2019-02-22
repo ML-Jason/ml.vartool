@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/ML-Jason/ml.vartool.svg?branch=master)](https://travis-ci.org/ML-Jason/ml.vartool)
-[![Coverage Status](https://coveralls.io/repos/github/ML-Jason/ml.vartool/badge.svg?branch=master)](https://coveralls.io/github/ML-Jason/ml.vartool?branch=master)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/951ba2030fc02992c0e1/test_coverage)](https://codeclimate.com/github/ML-Jason/ml.vartool/test_coverage)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+<!--[![Coverage Status](https://coveralls.io/repos/github/ML-Jason/ml.vartool/badge.svg?branch=master)](https://coveralls.io/github/ML-Jason/ml.vartool?branch=master)-->
 
 <!-- TOC -->
 
