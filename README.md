@@ -10,6 +10,7 @@
 - [ml.vartool](#mlvartool)
   - [vcheck](#vcheck)
   - [vutils](#vutils)
+  - [twzip](#twzip)
 - [Installing](#installing)
 - [dependencies](#dependencies)
 - [Build](#build)
@@ -17,13 +18,15 @@
 - [Usage](#usage)
   - [vcheck](#vcheck-1)
   - [vutils](#vutils-1)
+  - [twzip](#twzip-1)
 
 <!-- /TOC -->
 
 # ml.vartool
-ml.vartool是用來處理變數的一個函式庫，包含了vcheck、vutils兩個功能。   
+ml.vartool是用來處理變數的一個函式庫，包含了vcheck、vutils、twzip。   
 vcheck用來驗證變數型別。  
-vutils用來產生變數。
+vutils用來產生變數。  
+twzip是台灣的縣市區域郵遞區號。
 
 ## vcheck
 建構於[validator.js](https://github.com/chriso/validator.js)之上。
@@ -61,6 +64,26 @@ clientIP(req:Object) | String | 傳入express的req物件，解析user的IP。
 useragent(req:Object) | Object | 傳入express的req物件，解析user的useragent。<br/>回傳物件為[express-useragent](https://github.com/biggora/express-useragent)物件。<br/>  vutils額外擴充了解析IP的功能(express-useragent並沒有解析IP)，存放在ip這個屬性裡。
 datesBetween(startDate:String, endDate:String) | Array | 回傳一個陣列，裡面是從startDate到endDate之間的日期字串(格式為yyyy-MM-dd)
 
+## twzip
+台灣的縣市區域郵遞區號列表，是一個陣列。  
+資料格式如下：
+
+```js
+[
+  {
+    name: '縣市名稱',
+    en: '縣市英文名',
+    dist: [
+      {
+        name: '區域名稱',
+        en: '區域英文名',
+        c3: '三碼郵遞區號',
+      },
+    ],
+  },
+]
+```
+
 # Installing
 ```
 $ npm i ml.vartool --save
@@ -89,7 +112,7 @@ $ npm run coverage
 
 # Usage
 ## vcheck
-```
+```js
 const { vcheck } = require('ml.vartool');
 // 或 import { vcheck } from 'ml.vartool';
 
@@ -100,10 +123,18 @@ const str = vcheck.str(' this is a string');
 const islowercase = vcheck.isLowercase('abc');
 ```
 ## vutils
-```
+```js
 const { vutils } = require('ml.vartool');
 // 或 import { vutils } from 'ml.vartool';
 
 // 回傳依照時間產生長度為20的ID值(timestamp編碼+隨機字串)
 const str = vutils.newID(20); 
+```
+
+## twzip
+```js
+const { twzip } = require('ml.vartool');
+// 或 import { twzip } from 'ml.vartool';
+
+console.log(twzip);
 ```
