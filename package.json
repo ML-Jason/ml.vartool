@@ -1,6 +1,6 @@
 {
   "name": "ml.vartool",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Variable validation and Variable generator",
   "main": "dist/index.js",
   "scripts": {
@@ -40,6 +40,6 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.15.0",
     "mocha": "^5.2.0",
-    "nyc": "^13.3.0"
+    "nyc": "^14.1.1"
   }
 }
