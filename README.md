@@ -41,7 +41,7 @@ normalStr(val) | String | 只允許英數、以及_@.-
 number(val) | Number | 將傳入值轉成數字，失敗則回傳NaN
 email(val) | String | 確認是否為email，失敗則回傳空字串
 mongoID(val) | String | 確認是否為mongoID格式，失敗則回傳空字串
-url(val) | String | 確認是否為url格式，失敗則回傳空字串。可允許*符號，但只限於使用在第一層sub-domain
+url(val, {noLocalhost=true}) | String | 確認是否為url格式，失敗則回傳空字串。可允許*符號，但只限於使用在第一層sub-domain。<br/>noLocalhost參數可以控制是否允許localhost(預設為不允許)
 boolean(val) | Boolean | 除了1或'1'或true，其餘都返回false
 luxon(val, fmt) | DateTime | 將物件或字串轉成luxon的DateTime格式，可傳入JS Date或是字串(yyyy-MM-dd)，如果傳入的字串不是預設的yyyy-MM-dd，則可以藉由第二個參數fmt來自訂格式。<br/>luxon DateTime的使用方式請參考：[luxon](https://github.com/moment/luxon)。
 json(val) | Object | 將物件或字串藉由json轉換成新物件，如果失敗，則回傳null
