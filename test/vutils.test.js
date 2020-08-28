@@ -71,6 +71,23 @@ describe('vutils.newID()', () => {
   });
 });
 
+describe('vutils.newVaID()', () => {
+  it('newValID', () => {
+    const str = '12Ab2D';
+    expect(vutils.newVaID(str)).to.be.equal('12Ab2D0ak');
+  });
+  it('at least 3 verify cdoe', () => {
+    const str = '0000';
+    expect(vutils.newVaID(str)).to.be.equal('000005e');
+  });
+  it('valid valID', () => {
+    expect(vutils.verifyVaID('12Ab2D0ak')).to.be.true;
+  });
+  it('invalid valID', () => {
+    expect(vutils.verifyVaID('12Ac2D0ak')).to.be.false;
+  });
+});
+
 describe('vutils.md5()', () => {
   it('md5 encode', () => {
     const str = 'this is password';
@@ -81,16 +98,10 @@ describe('vutils.md5()', () => {
   });
 });
 
-describe('vutils.replaceAll()', () => {
-  it('"2" should be all replaced by "!"', () => {
-    expect(vutils.replaceAll('123Abc-.@_=o2c', '2', '!')).to.be.equal('1!3Abc-.@_=o!c');
-  });
-});
-
 describe('vutils.hashName()', () => {
   it('Name should be hashed and length is not changed', () => {
     const name = 'Jason Tseng';
-    const outName = 'Jas○○○○○eng';
+    const outName = 'Jas*****eng';
     expect(vutils.hashName(name)).to.be.equal(outName).and.to.have.property('length', name.length);
   });
   it('Replace char parameter should work', () => {
@@ -102,14 +113,14 @@ describe('vutils.hashName()', () => {
     expect(vutils.hashName()).to.be.empty;
   });
   it('length === 2 should work', () => {
-    expect(vutils.hashName('12')).to.be.equal('1○');
+    expect(vutils.hashName('12')).to.be.equal('1*');
   });
 });
 
 describe('vutils.hashEmail()', () => {
   it('Email should be hashed and length is not changed', () => {
     const name = 'jason@medialand.tw';
-    const outName = 'jas○○@medi○○○○d.tw';
+    const outName = 'jas**@medi****d.tw';
     expect(vutils.hashEmail(name)).to.be.equal(outName).and.to.have.property('length', name.length);
   });
   it('Replace char parameter should work', () => {
@@ -119,39 +130,6 @@ describe('vutils.hashEmail()', () => {
   });
   it('wrong email should return empty string', () => {
     expect(vutils.hashEmail('not a email')).to.be.empty;
-  });
-});
-
-describe('vutils.clientIP()', () => {
-  it('clientIP should be "127.0.0.1"', () => {
-    const req = {
-      headers: { 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36' },
-      connection: { remoteAddress: '127.0.0.1' },
-      socket: { remoteAddress: '127.0.0.1' },
-    };
-    expect(vutils.clientIP(req)).to.be.equal('127.0.0.1');
-  });
-});
-describe('vutils.useragent()', () => {
-  it('browser should be "Chrome" and platfrom should be "Microsoft Windows"', () => {
-    const req = {
-      headers: { 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36' },
-      connection: { remoteAddress: '127.0.0.1' },
-      socket: { remoteAddress: '127.0.0.1' },
-    };
-    expect(vutils.useragent(req))
-      .to.have.property('browser', 'Chrome');
-    expect(vutils.useragent(req))
-      .to.have.property('platform', 'Microsoft Windows');
-  });
-  it('ip should be "127.0.0.1"', () => {
-    const req = {
-      headers: { 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36' },
-      connection: { remoteAddress: '127.0.0.1' },
-      socket: { remoteAddress: '127.0.0.1' },
-    };
-    expect(vutils.useragent(req))
-      .to.have.property('ip', '127.0.0.1');
   });
 });
 
@@ -167,5 +145,20 @@ describe('vutils.datesBetween()', () => {
     const out = [];
     expect(vutils.datesBetween())
       .to.be.eql(out);
+  });
+});
+
+describe('vutils.arrayDistinct()', () => {
+  it('flat arrays', () => {
+    const input1 = ['a', 1, 2, 'bc'];
+    const input2 = ['b', 1, 3, 'bcd'];
+    const out = ['a', 1, 2, 'bc', 'b', 3, 'bcd'];
+    expect(vutils.arrayDistinct([input1, input2])).to.be.eql(out);
+  });
+  it('Object arrays', () => {
+    const input1 = [{ k: 1, data: 111 }, { k: 'b', data: 'bbb' }];
+    const input2 = [{ k: 2, data: 222 }, { k: 'b', data: 'bbb' }];
+    const out = [{ k: 1, data: 111 }, { k: 'b', data: 'bbb' }, { k: 2, data: 222 }];
+    expect(vutils.arrayDistinct([input1, input2], 'k')).to.be.eql(out);
   });
 });

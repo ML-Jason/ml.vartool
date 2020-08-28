@@ -66,6 +66,9 @@ describe('vcheck.url()', () => {
   it('error should return empty', () => {
     expect(vcheck.url('123abc')).to.be.empty;
   });
+  it('no domain', () => {
+    expect(vcheck.url('com.tw')).to.be.empty;
+  });
   it('wrong protocol should return empty', () => {
     expect(vcheck.url('ftp://www.123abc')).to.be.empty;
   });
@@ -73,31 +76,52 @@ describe('vcheck.url()', () => {
     expect(vcheck.url('www.abc.com')).to.be.equal('www.abc.com');
   });
   it('* can be allowed', () => {
-    expect(vcheck.url('http://*.123abc.com')).to.be.equal('http://*.123abc.com');
+    expect(vcheck.url('http://*.123abc.com', { wildcard: true })).to.be.equal('http://*.123abc.com');
+  });
+  it('* is not allowed', () => {
+    expect(vcheck.url('http://*.123abc.com')).to.be.equal('');
   });
   it('* can be allowed and protocol can be ignored', () => {
-    expect(vcheck.url('*.123abc.com')).to.be.equal('*.123abc.com');
+    expect(vcheck.url('*.123abc.com', { wildcard: true })).to.be.equal('*.123abc.com');
   });
   it('* should be the sub-domain only', () => {
-    expect(vcheck.url('www.123abc.*.com')).to.be.empty;
+    expect(vcheck.url('www.123abc.*.com', { wildcard: true })).to.be.empty;
   });
   it('only one * allowed', () => {
-    expect(vcheck.url('*.123abc.*.com')).to.be.empty;
+    expect(vcheck.url('*.123abc.*.com', { wildcard: true })).to.be.empty;
   });
   it('* should before .', () => {
-    expect(vcheck.url('www.*123abc.com')).to.be.empty;
+    expect(vcheck.url('*123abc.com.tw', { wildcard: true })).to.be.empty;
+  });
+  it('only .com is not allowed .', () => {
+    expect(vcheck.url('*.com', { wildcard: true })).to.be.empty;
+  });
+  it('only .com.tw is not allowed .', () => {
+    expect(vcheck.url('*.com.tw', { wildcard: true })).to.be.empty;
   });
   it('not right * should return empty', () => {
-    expect(vcheck.url('http:*.//www.123abc.com')).to.be.empty;
+    expect(vcheck.url('http:*.//www.123abc.com', { wildcard: true })).to.be.empty;
+  });
+  it('only https is allowed', () => {
+    expect(vcheck.url('http://www.123abc.com', { protocols: ['https'] })).to.be.equal('');
+  });
+  it('ftp is allowed', () => {
+    expect(vcheck.url('ftp://www.123abc.com', { protocols: ['https', 'ftp'] })).to.be.equal('ftp://www.123abc.com');
+  });
+  it('invalid protocols parameter would fallback to default', () => {
+    expect(vcheck.url('http://www.123abc.com', { protocols: 'https' })).to.be.equal('http://www.123abc.com');
+  });
+  it('invalid protocol url', () => {
+    expect(vcheck.url('http://www.123abc.com://www.123abc.com')).to.be.equal('');
   });
   it('port is allowed', () => {
     expect(vcheck.url('http://www.123abc.com:8080')).to.be.equal('http://www.123abc.com:8080');
   });
   it('localhost is not allowed', () => {
-    expect(vcheck.url('http://localhost:8080')).to.be.equal('');
+    expect(vcheck.url('http://localhost:8080', { localhost: false })).to.be.equal('');
   });
   it('localhost can be allowed', () => {
-    expect(vcheck.url('http://localhost:8080', { noLocalhost: false })).to.be.equal('http://localhost:8080');
+    expect(vcheck.url('http://localhost:8080')).to.be.equal('http://localhost:8080');
   });
 });
 
